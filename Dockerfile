@@ -3,7 +3,6 @@ FROM node:14.17.0 as build
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies

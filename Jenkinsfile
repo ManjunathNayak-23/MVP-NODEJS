@@ -4,11 +4,14 @@ pipeline {
     pollSCM('* * * * *') // Enabling being build on Push
   }
     stages{
-	    stage("Hello World"){
-		    steps{
-			    sh 'npm install'	
+	  stage('Install Dependencies') {
+            steps {
+                script {
+                    sh "npm install"
+                }
+            }
         }
-	    }
+
 
         }
  

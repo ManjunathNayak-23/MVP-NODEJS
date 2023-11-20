@@ -1,29 +1,14 @@
-# Stage 1: Build the Angular app
-FROM node:14.17.0 as build
+FROM nginx:1.21.0-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
-
-# Copy the rest of the app source code
+# Copy the build files to the Nginx web server director
 COPY . .
+COPY . /usr/share/nginx/html
 
-# Build the Angular app
-RUN npm run build -- --configuration=production
-
-# Stage 2: Create a lightweight server image
-FROM node:14.17.0-alpine
-
-WORKDIR /app
-
-# Copy the built app from the previous stage
-COPY --from=build /app/dist/mongo-dbangular13 .
-
-# Expose the default HTTP port
+# Expose port 80
 EXPOSE 80
 
-# Serve the Angular app using http-server
-CMD ["npx", "http-server", "-p", "80", "-c-1", "."]
+# Start the Nginx web server
+CMD ["nginx", "-g", "daemon off;"]

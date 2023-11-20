@@ -31,13 +31,7 @@ pipeline {
                         }
                     }
                 }
-      stage('VIew') {
-                    steps {
-                        script {
-                           sh "${env.DOCKER_HUB_CREDENTIALS}"
-                        }
-                    }
-                }
+      
 
         stage('Build and Push Docker Image') {
                   steps {

@@ -36,21 +36,21 @@ pipeline {
         stage('Build and Push Docker Image') {
                   steps {
                       script {
-                        withCredentials([string(credentialsId: 'dockerusername', variable: 'username'), string(credentialsId: 'dockerpassword', variable: 'password')]) {
+//withCredentials([string(credentialsId: 'dockerusername', variable: 'username'), string(credentialsId: 'dockerpassword', variable: 'password')]) {
 
-                            // sh "docker build -t ${env.IMAGE_NAME} ."
-                        sh "docker login -u ${username} -p ${password}"
-}
+//                          sh "docker build -t ${env.IMAGE_NAME}."
+//                          sh "docker login -u ${username} -p ${password}"
+// }
 
                       
-                          // Build Docker image
-                          // dockerImage = docker.build("${env.IMAGE_NAME}", "-f ${env.DOCKERFILE_PATH} .")
+                   
+                          dockerImage = docker.build("${env.IMAGE_NAME}", "-f ${env.DOCKERFILE_PATH} .")
       
-                          // // Login to Docker Hub
-                          // // docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
-                          // //     // Push the Docker image to Docker Hub
-                          // //     dockerImage.push()
-                          // //}
+                  
+                          docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
+                              // Push the Docker image to Docker Hub
+                              dockerImage.push()
+                          }
                       }
                   }
               }

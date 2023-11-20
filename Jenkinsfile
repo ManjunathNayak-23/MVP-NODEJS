@@ -31,6 +31,15 @@ pipeline {
                         }
                     }
                 }
+
+      stage('Push Artifact') {
+                    steps {
+                        script {
+                            sh "echo '${AzureDevopsPAT}' | az devops login --organization https://dev.azure.com/manjunathnayak/"
+                            sh "az artifacts universal publish --organization https://dev.azure.com/manjunathnayak/ --project= Node-MVP --scope project --feed MVP-NODEJS-dev --name Node-mvp-dev --version 0.0.1 --description "Welcome to Universal Packages" --path /var/lib/jenkins/workspace/Nodejs-pipeline_develop/dist/"
+                        }
+                    }
+                }
       
 
         stage('Build and Push Docker Image') {
@@ -48,5 +57,7 @@ pipeline {
                       }
                   }
               }
+
+        
           }
         }

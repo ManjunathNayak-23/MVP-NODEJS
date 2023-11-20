@@ -1,5 +1,11 @@
 pipeline {
     agent any
+ environment {
+        DOCKER_HUB_CREDENTIALS = credentials('chandu2311') // Replace with your Docker Hub credentials ID
+        IMAGE_NAME = 'chandu2311/mvpnode'
+        DOCKERFILE_PATH = 'Dockerfile'
+    }
+  
  triggers {
     pollSCM('* * * * *') // Enabling being build on Push
   }
@@ -25,8 +31,29 @@ pipeline {
                         }
                     }
                 }
+      stage('VIew') {
+                    steps {
+                        script {
+                           sh "${env.DOCKER_HUB_CREDENTIALS}"
+                        }
+                    }
+                }
 
-
+        stage('Build and Push Docker Image') {
+                  steps {
+                      script {
+                          // Build Docker image
+                          dockerImage = docker.build("${env.IMAGE_NAME}", "-f ${env.DOCKERFILE_PATH} .")
+      
+                          // Login to Docker Hub
+                          docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
+                              // Push the Docker image to Docker Hub
+                              dockerImage.push()
+                          }
+                      }
+                  }
+              }
+          }
         }
  
  

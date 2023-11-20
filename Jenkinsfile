@@ -17,13 +17,13 @@ pipeline {
                 }
             }
         }
-        // stage('Run Tests') {
-        //     steps {
-        //         script {
-        //             sh "npm test"
-        //         }
-        //     }
-        // }
+        stage('Run Tests') {
+            steps {
+                script {
+                    sh "npm test"
+                }
+            }
+        }
         stage('Build') {
                     steps {
                         script {
@@ -36,19 +36,13 @@ pipeline {
         stage('Build and Push Docker Image') {
                   steps {
                       script {
-//withCredentials([string(credentialsId: 'dockerusername', variable: 'username'), string(credentialsId: 'dockerpassword', variable: 'password')]) {
 
-//                          sh "docker build -t ${env.IMAGE_NAME}."
-//                          sh "docker login -u ${username} -p ${password}"
-// }
-
-                      
-                   
-                          dockerImage = docker.build("${env.IMAGE_NAME}", "-f ${env.DOCKERFILE_PATH} .")
+                                         
+                          dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
       
                   
                           docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
-                              // Push the Docker image to Docker Hub
+                              
                               dockerImage.push()
                           }
                       }

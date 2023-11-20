@@ -36,14 +36,17 @@ pipeline {
         stage('Build and Push Docker Image') {
                   steps {
                       script {
+
+                        sh "docker build -t ${env.IMAGE_NAME} ."
+                        sh "docker login -u ${dockerusername} -p ${dockerpassword}"
                           // Build Docker image
-                          dockerImage = docker.build("${env.IMAGE_NAME}", "-f ${env.DOCKERFILE_PATH} .")
+                          // dockerImage = docker.build("${env.IMAGE_NAME}", "-f ${env.DOCKERFILE_PATH} .")
       
-                          // Login to Docker Hub
-                          // docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
-                          //     // Push the Docker image to Docker Hub
-                          //     dockerImage.push()
-                          //}
+                          // // Login to Docker Hub
+                          // // docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
+                          // //     // Push the Docker image to Docker Hub
+                          // //     dockerImage.push()
+                          // //}
                       }
                   }
               }

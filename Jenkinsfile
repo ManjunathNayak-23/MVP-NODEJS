@@ -36,9 +36,13 @@ pipeline {
         stage('Build and Push Docker Image') {
                   steps {
                       script {
+                        withCredentials([string(credentialsId: 'dockerusername', variable: 'username'), string(credentialsId: 'dockerpassword', variable: 'password')]) {
 
-                        sh "docker build -t ${env.IMAGE_NAME} ."
-                        sh "docker login -u ${dockerusername} -p ${dockerpassword}"
+                            // sh "docker build -t ${env.IMAGE_NAME} ."
+                        sh "docker login -u ${username} -p ${password}"
+}
+
+                      
                           // Build Docker image
                           // dockerImage = docker.build("${env.IMAGE_NAME}", "-f ${env.DOCKERFILE_PATH} .")
       

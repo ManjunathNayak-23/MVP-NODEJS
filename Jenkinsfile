@@ -1,7 +1,7 @@
 pipeline {
     agent any
  environment {
-        DOCKER_HUB_CREDENTIALS = credentials('chandu2311') // Replace with your Docker Hub credentials ID
+        DOCKER_HUB_CREDENTIALS = credentials('dockercred') // Replace with your Docker Hub credentials ID
         IMAGE_NAME = 'chandu2311/mvpnode'
         DOCKERFILE_PATH = 'Dockerfile'
     }

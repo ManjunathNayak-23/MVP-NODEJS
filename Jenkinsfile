@@ -39,9 +39,9 @@ pipeline {
                         script {
                             sh "npm run build"
                           sh 'tar -czvf dist.tar.gz dist'
-                           def currentVersion = readVersion()
-                    def newVersion = incrementVersion(currentVersion)
-                    writeVersion(newVersion)
+                    //        def currentVersion = readVersion()
+                    // def newVersion = incrementVersion(currentVersion)
+                    // writeVersion(newVersion)
                         }
                     }
                 }
@@ -52,7 +52,7 @@ pipeline {
                     def currentVersion = readVersion()
 
                     // Deploy to Nexus
-                    sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.tar.gz"
+                    sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
 
                     echo "Artifact deployed to Nexus with version ${currentVersion}"
                 }
@@ -107,20 +107,20 @@ def readVersion() {
     return version
 }
 
-def writeVersion(newVersion) {
-    script {
-        // Update package.json with the new version
-        sh "npm version ${newVersion} --no-git-tag-version"
-         sh 'git add package.json'
-                    sh 'git commit -m "Increment version"'
-                    sh 'git push'
-    }
-    echo "Version updated to: ${newVersion}"
-}
+// def writeVersion(newVersion) {
+//     script {
+//         // Update package.json with the new version
+//         sh "npm version ${newVersion} --no-git-tag-version"
+//          sh 'git add package.json'
+//                     sh 'git commit -m "Increment version"'
+//                     sh 'git push'
+//     }
+//     echo "Version updated to: ${newVersion}"
+// }
 
-def incrementVersion(version) {
-    def parts = version.tokenize('.')
-    def lastPart = parts[-1] as int
-    parts[-1] = (lastPart + 1).toString()
-    return parts.join('.')
-}
+// def incrementVersion(version) {
+//     def parts = version.tokenize('.')
+//     def lastPart = parts[-1] as int
+//     parts[-1] = (lastPart + 1).toString()
+//     return parts.join('.')
+// }

@@ -27,21 +27,19 @@ pipeline {
                 }
             }
         }
-      //   stage('Run Tests') {
-      //       steps {
-      //           script {
-      //               sh "npm test"
-      //           }
-      //       }
-      //   }
+        stage('Run Tests') {
+            steps {
+                script {
+                    sh "npm test"
+                }
+            }
+        }
         stage('Build') {
                     steps {
                         script {
                             sh "npm run build"
                           sh 'tar -czvf dist.tar.gz dist'
-                    //        def currentVersion = readVersion()
-                    // def newVersion = incrementVersion(currentVersion)
-                    // writeVersion(newVersion)
+              
                         }
                     }
                 }
@@ -59,42 +57,23 @@ pipeline {
             }
         }
 
-//       stage('Push Artifact') {
-//                     steps {
-//                         script {
-//                            withCredentials([string(credentialsId: 'AzureDevopsPAT', variable: 'AzureDevopsPAT')]) {
-                            
-//                                sh "echo ${AzureDevopsPAT} | az devops login --organization https://dev.azure.com/manjunathnayak/"
-//                            //def currentVersion = sh(script: "az artifacts universal show-version --feed https://dev.azure.com/manjunathnayak --name node-mvp-dev --version '*' --query '[0].versions[0]' -o tsv", returnStdout: true).trim()
-
-// def artifactVersion = sh(script: 'az artifacts package show --feed https://dev.azure.com/manjunathnaya --name node-mvp-dev --version "*" --query version --output tsv', returnStdout: true).trim()
-
-//                              sh "echo ${artifactVersion}"
-//                              sh "echo $artifactVersion "
-
-//                             //sh "echo ${AzureDevopsPAT} | az devops login --organization https://dev.azure.com/manjunathnayak/"
-//                             //sh "az artifacts universal publish --organization 'https://dev.azure.com/manjunathnayak/' --project='Node-MVP' --scope 'project' --feed 'MVP-NODEJS-dev' --name 'node-mvp-dev' --version 0.0.2 --description 'Welcome to Universal Packages' --path /var/lib/jenkins/workspace/Nodejs-pipeline_develop/dist/"
-//                            }
-//                         }
-//                     }
-//                 }
       
 
-        // stage('Build and Push Docker Image') {
-        //           steps {
-        //               script {
+        stage('Build and Push Docker Image') {
+                  steps {
+                      script {
 
                                          
-        //                   dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
+                          dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
       
                   
-        //                   docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
+                          docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
                               
-        //                       dockerImage.push()
-        //                   }
-        //               }
-        //           }
-        //       }
+                              dockerImage.push()
+                          }
+                      }
+                  }
+              }
 
         
           }
@@ -107,20 +86,3 @@ def readVersion() {
     return version
 }
 
-// def writeVersion(newVersion) {
-//     script {
-//         // Update package.json with the new version
-//         sh "npm version ${newVersion} --no-git-tag-version"
-//          sh 'git add package.json'
-//                     sh 'git commit -m "Increment version"'
-//                     sh 'git push'
-//     }
-//     echo "Version updated to: ${newVersion}"
-// }
-
-// def incrementVersion(version) {
-//     def parts = version.tokenize('.')
-//     def lastPart = parts[-1] as int
-//     parts[-1] = (lastPart + 1).toString()
-//     return parts.join('.')
-// }

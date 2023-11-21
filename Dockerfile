@@ -1,6 +1,3 @@
-# Start the Nginx web server
-CMD ["nginx", "-g", "daemon off;"]
-# Use the official Nginx image as the base image
 FROM nginx:latest
 
 # Create a directory to store your application files

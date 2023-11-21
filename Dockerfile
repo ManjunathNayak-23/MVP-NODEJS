@@ -1,14 +1,14 @@
-FROM nginx:1.21.0-alpine
-
-WORKDIR /app
-
-
-# Copy the build files to the Nginx web server director
-COPY . .
-COPY . /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
 # Start the Nginx web server
+CMD ["nginx", "-g", "daemon off;"]
+# Use the official Nginx image as the base image
+FROM nginx:latest
+
+# Create a directory to store your application files
+WORKDIR /usr/share/nginx/html
+
+# Copy the contents of the local 'dist' folder to the container's working directory
+COPY dist/ .
+
+EXPOSE 80
+# The default command to run when the container starts (this starts Nginx)
 CMD ["nginx", "-g", "daemon off;"]

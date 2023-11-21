@@ -38,6 +38,7 @@ pipeline {
                     steps {
                         script {
                             sh "npm run build"
+                          sh 'tar -czvf dist.tar.gz dist'
                            def currentVersion = readVersion()
                     def newVersion = incrementVersion(currentVersion)
                     writeVersion(newVersion)

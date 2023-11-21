@@ -6,7 +6,7 @@ pipeline {
         DOCKERFILE_PATH = 'Dockerfile'
 
 
-    NEXUS_URL = 'http://34.172.247.216:8081/repository/mvp-nodejs/'
+    NEXUS_URL = 'http://34.172.247.216:8081'
         NEXUS_REPO_ID = 'mvp-nodejs'
         NEXUS_USERNAME = 'admin'
         NEXUS_PASSWORD = 'admin'

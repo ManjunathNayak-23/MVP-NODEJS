@@ -7,7 +7,7 @@ pipeline {
 
 
     NEXUS_URL = 'http://34.172.247.216:8081'
-        NEXUS_REPO_ID = 'test'
+        NEXUS_REPO_ID = 'mvpnodejs'
         NEXUS_USERNAME = 'admin'
         NEXUS_PASSWORD = 'admin'
 

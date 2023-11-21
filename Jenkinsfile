@@ -36,10 +36,14 @@ pipeline {
                     steps {
                         script {
                            withCredentials([string(credentialsId: 'AzureDevopsPAT', variable: 'AzureDevopsPAT')]) {
+                            
                                sh "echo ${AzureDevopsPAT} | az devops login --organization https://dev.azure.com/manjunathnayak/"
-                           def currentVersion = sh(script: "az artifacts universal show-version --feed https://dev.azure.com/manjunathnayak --name node-mvp-dev --version '*' --query '[0].versions[0]' -o tsv", returnStdout: true).trim()
-                             sh "echo ${currentVersion}"
-                             sh "echo $currentVersion "
+                           //def currentVersion = sh(script: "az artifacts universal show-version --feed https://dev.azure.com/manjunathnayak --name node-mvp-dev --version '*' --query '[0].versions[0]' -o tsv", returnStdout: true).trim()
+
+def artifactVersion = sh(script: 'az artifacts package show --feed https://dev.azure.com/manjunathnaya --name node-mvp-dev --version "*" --query version --output tsv', returnStdout: true).trim()
+
+                             sh "echo ${artifactVersion}"
+                             sh "echo $artifactVersion "
 
                             //sh "echo ${AzureDevopsPAT} | az devops login --organization https://dev.azure.com/manjunathnayak/"
                             //sh "az artifacts universal publish --organization 'https://dev.azure.com/manjunathnayak/' --project='Node-MVP' --scope 'project' --feed 'MVP-NODEJS-dev' --name 'node-mvp-dev' --version 0.0.2 --description 'Welcome to Universal Packages' --path /var/lib/jenkins/workspace/Nodejs-pipeline_develop/dist/"

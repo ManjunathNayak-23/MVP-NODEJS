@@ -111,6 +111,9 @@ def writeVersion(newVersion) {
     script {
         // Update package.json with the new version
         sh "npm version ${newVersion} --no-git-tag-version"
+         sh 'git add package.json'
+                    sh 'git commit -m "Increment version"'
+                    sh 'git push'
     }
     echo "Version updated to: ${newVersion}"
 }

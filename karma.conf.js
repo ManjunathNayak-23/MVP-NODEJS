@@ -1,6 +1,3 @@
-// Karma configuration file, see link for more information
-// https://karma-runner.github.io/1.0/config/configuration-file.html
-
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -11,14 +8,11 @@ module.exports = function (config) {
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma'),
-       require('karma-junit-reporter')
+      require('karma-junit-reporter')
     ],
     client: {
       jasmine: {
-        // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution with `random: false`
-        // or set a specific seed with `seed: 4321`
+        // your jasmine configuration options
       },
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
@@ -29,11 +23,12 @@ module.exports = function (config) {
       dir: require('path').join(__dirname, './coverage/mongo-dbangular13'),
       subdir: '.',
       reporters: [
+        { type: 'lcovonly', subdir: '.', file: 'lcov.info' },
         { type: 'html' },
         { type: 'text-summary' }
       ]
     },
-    reporters: ['progress', , 'junit'],
+    reporters: ['progress', 'junit'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -41,10 +36,10 @@ module.exports = function (config) {
     browsers: ['ChromeHeadless'],
     singleRun: true,
     restartOnFileChange: true,
-   junitReporter: {
+    junitReporter: {
       outputDir: 'testresults/junit',
-	  outputFile: 'unit-test-result.xml',
-	  useBrowserName: false
+      outputFile: 'unit-test-result.xml',
+      useBrowserName: false
     },
   });
 };

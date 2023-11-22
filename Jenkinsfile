@@ -27,54 +27,71 @@ pipeline {
                 }
             }
         }
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh "npm test"
-                }
-            }
-        }
-        stage('Build') {
-                    steps {
-                        script {
-                            sh "npm run build"
-                          sh 'tar -czvf dist.tar.gz dist'
+      //   stage('Run Tests') {
+      //       steps {
+      //           script {
+      //               sh "npm test"
+      //           }
+      //       }
+      //   }
+      //   stage('Build') {
+      //               steps {
+      //                   script {
+      //                       sh "npm run build"
+      //                     sh 'tar -czvf dist.tar.gz dist'
               
-                        }
-                    }
-                }
+      //                   }
+      //               }
+      //           }
 
-      stage('Deploy to Nexus') {
-            steps {
-                script {
-                    def currentVersion = readVersion()
+      // stage('Deploy to Nexus') {
+      //       steps {
+      //           script {
+      //               def currentVersion = readVersion()
 
-                    // Deploy to Nexus
-                    sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
+      //               // Deploy to Nexus
+      //               sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
 
-                    echo "Artifact deployed to Nexus with version ${currentVersion}"
-                }
-            }
-        }
+      //               echo "Artifact deployed to Nexus with version ${currentVersion}"
+      //           }
+      //       }
+      //   }
 
       
 
-        stage('Build and Push Docker Image') {
-                  steps {
-                      script {
+      //   stage('Build and Push Docker Image') {
+      //             steps {
+      //                 script {
 
                                          
-                          dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
+      //                     dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
       
                   
-                          docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
+      //                     docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
                               
-                              dockerImage.push()
-                          }
-                      }
-                  }
-              }
+      //                         dockerImage.push()
+      //                     }
+      //                 }
+      //             }
+      //         }
+stage('OWASP'){
+steps{
+script{
 
+sh "dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'OWASP'"
+
+
+}
+
+
+
+
+}
+
+
+
+
+}
         
           }
         }

@@ -20,13 +20,13 @@ pipeline {
     pollSCM('* * * * *') // Enabling being build on Push
   }
     stages{
-      stage('Install Dependencies') {
-            steps {
-                script {
-                    sh "npm install"
-                }
-            }
-        }
+      // stage('Install Dependencies') {
+      //       steps {
+      //           script {
+      //               sh "npm install"
+      //           }
+      //       }
+      //   }
       //   stage('Run Tests') {
       //       steps {
       //           script {
@@ -74,15 +74,17 @@ pipeline {
       //                 }
       //             }
       //         }
-stage('OWASP'){
-steps{
-script{
-
-sh "dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'OWASP'"
-
-
-}
-
+stage('OWASP Dependency-Check Vulnerabilities') {
+      steps {
+        dependencyCheck additionalArguments: ''' 
+                    -o './'
+                    -s './'
+                    -f 'ALL' 
+                    --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+        
+        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+      }
+    }
 
 
 

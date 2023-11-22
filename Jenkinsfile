@@ -4,10 +4,10 @@ pipeline {
         DOCKER_HUB_CREDENTIALS = 'dockercred' // Replace with your Docker Hub credentials ID
         IMAGE_NAME = 'chandu2311/mvpnode'
         DOCKERFILE_PATH = 'Dockerfile'
-        NEXUS_URL = 'nexusurl'
-        NEXUS_REPO_ID = 'nexusrepo'
-        NEXUS_USERNAME = 'nexususername'
-        NEXUS_PASSWORD = 'nexuspassword'
+        // NEXUS_URL = 'nexusurl'
+        // NEXUS_REPO_ID = 'nexusrepo'
+        // NEXUS_USERNAME = 'nexususername'
+        // NEXUS_PASSWORD = 'nexuspassword'
         // Define artifact information
         PACKAGE_NAME = 'mvp-nodejs'
         VERSION_FILE = 'package.json'
@@ -46,10 +46,14 @@ pipeline {
             steps {
                 script {
                     def currentVersion = readVersion()
-
+                  
+                    withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
+                     
+                      sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
+                    
+                    }
                     // Deploy to Nexus
-                    sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
-
+                   
                     echo "Artifact deployed to Nexus with version ${currentVersion}"
                 }
             }

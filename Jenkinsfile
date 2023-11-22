@@ -12,7 +12,7 @@ pipeline {
         PACKAGE_NAME = 'mvp-nodejs'
         VERSION_FILE = 'package.json'
 
-     SONAR_SCANNER_HOME = tool 'sonarscanner'
+    SONAR_SCANNER_HOME = tool 'SonarQube Scanner 4.0.0'
         PATH = "${SONAR_SCANNER_HOME}/bin:${env.PATH}"
     }
   

@@ -41,9 +41,10 @@ pipeline {
     steps {
     withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
          sh '''$SCANNER_HOME/bin/sonar-scanner \
-         -Dsonar.projectKey=projectKey \
-         -Dsonar.projectName=projectName \
+         -Dsonar.projectKey=nodejs \
+         -Dsonar.projectName=Nodejs \
          -Dsonar.sources=src/ \
+         -Dsonar.tests=testresults/junit \
          -Dsonar.java.binaries=target/classes/ \
          -Dsonar.exclusions=src/test/java/****/*.java \
          -Dsonar.java.libraries=/var/lib/jenkins/.m2/**/*.jar \

@@ -11,6 +11,9 @@ pipeline {
         // Define artifact information
         PACKAGE_NAME = 'mvp-nodejs'
         VERSION_FILE = 'package.json'
+
+     SONAR_SCANNER_HOME = tool 'sonarscanner'
+        PATH = "${SONAR_SCANNER_HOME}/bin:${env.PATH}"
     }
   
  triggers {
@@ -32,61 +35,72 @@ pipeline {
                 }
             }
         }
-        stage('Build') {
-                    steps {
-                        script {
-                            sh "npm run build"
-                          sh 'tar -czvf dist.tar.gz dist'
-              
-                        }
-                    }
-                }
 
-      stage('Deploy to Nexus') {
+          stage('SonarQube Analysis') {
             steps {
                 script {
-                    def currentVersion = readVersion()
-                  
-                    withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
-                     
-                      sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
-                    
+                    withSonarQubeEnv('YourSonarQubeServer') {
+                        // Run SonarQube scanner
+                        sh "${SONAR_SCANNER_HOME}/bin/sonar-scanner"
                     }
-                    // Deploy to Nexus
-                   
-                    echo "Artifact deployed to Nexus with version ${currentVersion}"
                 }
             }
         }
+      //   stage('Build') {
+      //               steps {
+      //                   script {
+      //                       sh "npm run build"
+      //                     sh 'tar -czvf dist.tar.gz dist'
+              
+      //                   }
+      //               }
+      //           }
+
+      // stage('Deploy to Nexus') {
+      //       steps {
+      //           script {
+      //               def currentVersion = readVersion()
+                  
+      //               withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
+                     
+      //                 sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
+                    
+      //               }
+      //               // Deploy to Nexus
+                   
+      //               echo "Artifact deployed to Nexus with version ${currentVersion}"
+      //           }
+      //       }
+      //   }
 
       
 
-        stage('Build and Push Docker Image') {
-                  steps {
-                      script {
+      //   stage('Build and Push Docker Image') {
+      //             steps {
+      //                 script {
 
                                          
-                          dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
+      //                     dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
       
                   
-                          docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
+      //                     docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
                               
-                              dockerImage.push()
-                          }
-                      }
-                  }
-              }
-        stage('OWASP Dependency-Check Vulnerabilities') {
-              steps {
-                dependencyCheck additionalArguments: ''' 
-                            -o './'
-                            -s './'
-                            -f 'ALL' 
-                            --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+      //                         dockerImage.push()
+      //                     }
+      //                 }
+      //             }
+      //         }
+      //   stage('OWASP Dependency-Check Vulnerabilities') {
+      //         steps {
+      //           dependencyCheck additionalArguments: ''' 
+      //                       -o './'
+      //                       -s './'
+      //                       -f 'ALL' 
+      //                       --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
                 
-                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-              }
-            }
+      //           dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+      //         }
+      //       }
   
           }
         }

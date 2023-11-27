@@ -20,11 +20,14 @@ pipeline {
   }
 
     stages{
-      stage('Install Dependencies') {
+      stage('Build and Test') {
             steps {
              
                  script {
-               installDependencies.installDependency()
+                      node.installDependency()
+                      node.test()
+                      node.build()
+                
                 //     sh "npm install"
                  }
             }

@@ -19,37 +19,30 @@ pipeline {
  //    pollSCM('* * * * *') // Enabling being build on Push
  //  }
 
-    stages{
-      stage('Build and Test') {
-            steps {
+    // stages{
+    //   stage('Build and Test') {
+    //         steps {
              
-                 script {
-                      nodejs.installDependency()
-                      nodejs.test()
-                      nodejs.build()
+    //              script {
+    //                   nodejs.installDependency()
+    //                   nodejs.test()
+    //                   nodejs.build()
                 
-                //     sh "npm install"
-                 }
-            }
-        }
-//         stage('Run Tests') {
-//             steps {
-//                 script {
-//                     sh "npm test"
-//                 }
-//             }
-//         }
+               
+    //              }
+    //         }
+    //     }
 
-      stage('SonarQube analysis') {
-    environment {
-      SCANNER_HOME = tool 'Sonar-scanner'
-    }
-    steps {
-      script{
-            withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
-              sonarqube.sonarscan("Nodejs","nodejs")
-      }
-      }
+    //   stage('SonarQube analysis') {
+    // environment {
+    //   SCANNER_HOME = tool 'Sonar-scanner'
+    // }
+    // steps {
+    //   script{
+    //         withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
+    //           sonarqube.sonarscan("Nodejs","nodejs")
+    //   }
+    //   }
 
          // sh '''$SCANNER_HOME/bin/sonar-scanner \
          // -Dsonar.projectKey=nodejs \
@@ -63,6 +56,7 @@ pipeline {
     //    }
      }
 }
+
 //         stage('Build') {
 //                     steps {
 //                         script {
@@ -73,22 +67,22 @@ pipeline {
 //                     }
 //                 }
 
-//       stage('Deploy to Nexus') {
-//             steps {
-//                 script {
-//                     def currentVersion = readVersion()
+      stage('Deploy to Nexus') {
+            steps {
+                script {
+                    def currentVersion = version.readVersion("package.json")
                   
-//                     withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
+                    // withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
                      
-//                       sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
+                    //   sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
                     
-//                     }
-//                     // Deploy to Nexus
+                    // }
+                    // // Deploy to Nexus
                    
-//                     echo "Artifact deployed to Nexus with version ${currentVersion}"
-//                 }
-//             }
-//         }
+                    echo "Artifact deployed to Nexus with version ${currentVersion}"
+                }
+            }
+        }
 
       
 
@@ -122,10 +116,5 @@ pipeline {
           }
         }
 
-def readVersion() {
-    def packageJson = readJSON file: VERSION_FILE
-    def version = packageJson.version
-    echo "Current version: ${version}"
-    return version
-}
+
 

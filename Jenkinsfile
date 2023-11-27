@@ -24,7 +24,7 @@ pipeline {
             steps {
              
                  script {
-               installDependency()
+               installDependencies.installDependency()
                 //     sh "npm install"
                  }
             }

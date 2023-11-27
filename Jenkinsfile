@@ -1,3 +1,4 @@
+@Library('sharedLibrary') _
 pipeline {
     agent any
  environment {
@@ -21,92 +22,93 @@ pipeline {
     stages{
       stage('Install Dependencies') {
             steps {
-                script {
-                    sh "npm install"
-                }
+              installDependencies()
+                // script {
+                //     sh "npm install"
+                // }
             }
         }
-        stage('Run Tests') {
-            steps {
-                script {
-                    sh "npm test"
-                }
-            }
-        }
+//         stage('Run Tests') {
+//             steps {
+//                 script {
+//                     sh "npm test"
+//                 }
+//             }
+//         }
 
-      stage('SonarQube analysis') {
-    environment {
-      SCANNER_HOME = tool 'Sonar-scanner'
-    }
-    steps {
-    withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
-         sh '''$SCANNER_HOME/bin/sonar-scanner \
-         -Dsonar.projectKey=nodejs \
-         -Dsonar.projectName=Nodejs \
-         -Dsonar.sources=src/ \
-         -Dsonar.tests=testresults/junit \
-         -Dsonar.java.binaries=target/classes/ \
-         -Dsonar.exclusions=src/test/java/****/*.java \
-         -Dsonar.java.libraries=/var/lib/jenkins/.m2/**/*.jar \
-         -Dsonar.projectVersion=${BUILD_NUMBER}-${GIT_COMMIT_SHORT}'''
-       }
-     }
-}
-        stage('Build') {
-                    steps {
-                        script {
-                            sh "npm run build"
-                          sh 'tar -czvf dist.tar.gz dist'
+//       stage('SonarQube analysis') {
+//     environment {
+//       SCANNER_HOME = tool 'Sonar-scanner'
+//     }
+//     steps {
+//     withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
+//          sh '''$SCANNER_HOME/bin/sonar-scanner \
+//          -Dsonar.projectKey=nodejs \
+//          -Dsonar.projectName=Nodejs \
+//          -Dsonar.sources=src/ \
+//          -Dsonar.tests=testresults/junit \
+//          -Dsonar.java.binaries=target/classes/ \
+//          -Dsonar.exclusions=src/test/java/****/*.java \
+//          -Dsonar.java.libraries=/var/lib/jenkins/.m2/**/*.jar \
+//          -Dsonar.projectVersion=${BUILD_NUMBER}-${GIT_COMMIT_SHORT}'''
+//        }
+//      }
+// }
+//         stage('Build') {
+//                     steps {
+//                         script {
+//                             sh "npm run build"
+//                           sh 'tar -czvf dist.tar.gz dist'
               
-                        }
-                    }
-                }
+//                         }
+//                     }
+//                 }
 
-      stage('Deploy to Nexus') {
-            steps {
-                script {
-                    def currentVersion = readVersion()
+//       stage('Deploy to Nexus') {
+//             steps {
+//                 script {
+//                     def currentVersion = readVersion()
                   
-                    withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
+//                     withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
                      
-                      sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
+//                       sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
                     
-                    }
-                    // Deploy to Nexus
+//                     }
+//                     // Deploy to Nexus
                    
-                    echo "Artifact deployed to Nexus with version ${currentVersion}"
-                }
-            }
-        }
+//                     echo "Artifact deployed to Nexus with version ${currentVersion}"
+//                 }
+//             }
+//         }
 
       
 
-        stage('Build and Push Docker Image') {
-                  steps {
-                      script {
+//         stage('Build and Push Docker Image') {
+//                   steps {
+//                       script {
 
                                          
-                          dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
+//                           dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
       
                   
-                          docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
+//                           docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
                               
-                              dockerImage.push()
-                          }
-                      }
-                  }
-              }
-        stage('OWASP Dependency-Check Vulnerabilities') {
-              steps {
-                dependencyCheck additionalArguments: ''' 
-                            -o './'
-                            -s './'
-                            -f 'ALL' 
-                            --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+//                               dockerImage.push()
+//                           }
+//                       }
+//                   }
+//               }
+//         stage('OWASP Dependency-Check Vulnerabilities') {
+//               steps {
+//                 dependencyCheck additionalArguments: ''' 
+//                             -o './'
+//                             -s './'
+//                             -f 'ALL' 
+//                             --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
                 
-                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-              }
-            }
+//                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+//               }
+//             }
   
           }
         }

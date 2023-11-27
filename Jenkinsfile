@@ -46,9 +46,11 @@ pipeline {
     }
     steps {
       script{
-      sonarqube.sonarscan('sonartoken','Sonar','Nodejs','nodejs')
+            withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
+              sonarqube.sonarscan(credentialsId,installationName,'Nodejs','nodejs')
       }
-    // withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
+      }
+
     //      sh '''$SCANNER_HOME/bin/sonar-scanner \
     //      -Dsonar.projectKey=nodejs \
     //      -Dsonar.projectName=Nodejs \

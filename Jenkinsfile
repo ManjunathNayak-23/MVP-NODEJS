@@ -15,9 +15,9 @@ pipeline {
 
     }
   
- triggers {
-    pollSCM('* * * * *') // Enabling being build on Push
-  }
+ // triggers {
+ //    pollSCM('* * * * *') // Enabling being build on Push
+ //  }
 
     stages{
       stage('Build and Test') {

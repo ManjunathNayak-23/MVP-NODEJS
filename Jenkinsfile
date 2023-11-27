@@ -47,7 +47,7 @@ pipeline {
     steps {
       script{
             withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
-              sonarqube.sonarscan('Nodejs','nodejs')
+              sonarqube.sonarscan("Nodejs","nodejs")
       }
       }
 

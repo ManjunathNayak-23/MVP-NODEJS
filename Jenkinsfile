@@ -22,10 +22,11 @@ pipeline {
     stages{
       stage('Install Dependencies') {
             steps {
-              installDependencies()
-                // script {
+             
+                 script {
+               installDependencies()
                 //     sh "npm install"
-                // }
+                 }
             }
         }
 //         stage('Run Tests') {

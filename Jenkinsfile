@@ -19,7 +19,7 @@ pipeline {
  //    pollSCM('* * * * *') // Enabling being build on Push
  //  }
 
-    // stages{
+    stages{
     //   stage('Build and Test') {
     //         steps {
              
@@ -107,6 +107,7 @@ pipeline {
   
           }
         }
+
 
 
 

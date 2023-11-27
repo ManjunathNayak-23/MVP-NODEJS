@@ -44,15 +44,15 @@ pipeline {
   //   }
 //}
 
-//         stage('Build') {
-//                     steps {
-//                         script {
-//                             sh "npm run build"
-//                           sh 'tar -czvf dist.tar.gz dist'
+        stage('Archive Artifact') {
+                    steps {
+                        script {
+                           
+                         archive.archiveArtifact()
               
-//                         }
-//                     }
-//                 }
+                        }
+                    }
+                }
 
       stage('Deploy to Nexus') {
             steps {

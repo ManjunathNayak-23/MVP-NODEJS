@@ -24,9 +24,9 @@ pipeline {
             steps {
              
                  script {
-                      node.installDependency()
-                      node.test()
-                      node.build()
+                      nodejs.installDependency()
+                      nodejs.test()
+                      nodejs.build()
                 
                 //     sh "npm install"
                  }

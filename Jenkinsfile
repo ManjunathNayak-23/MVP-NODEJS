@@ -5,11 +5,6 @@ pipeline {
         DOCKER_HUB_CREDENTIALS = 'dockercred' // Replace with your Docker Hub credentials ID
         IMAGE_NAME = 'chandu2311/mvpnode'
         DOCKERFILE_PATH = 'Dockerfile'
-        // NEXUS_URL = 'nexusurl'
-        // NEXUS_REPO_ID = 'nexusrepo'
-        // NEXUS_USERNAME = 'nexususername'
-        // NEXUS_PASSWORD = 'nexuspassword'
-        // Define artifact information
         PACKAGE_NAME = 'mvp-nodejs'
         VERSION_FILE = 'package.json'
 
@@ -20,18 +15,18 @@ pipeline {
  //  }
 
     stages{
-    //   stage('Build and Test') {
-    //         steps {
+      stage('Build and Test') {
+            steps {
              
-    //              script {
-    //                   nodejs.installDependency()
-    //                   nodejs.test()
-    //                   nodejs.build()
+                 script {
+                      nodejs.installDependency()
+                      nodejs.test()
+                      nodejs.build()
                 
                
-    //              }
-    //         }
-    //     }
+                 }
+            }
+        }
 
     //   stage('SonarQube analysis') {
     // environment {
@@ -66,8 +61,8 @@ pipeline {
                   
                     withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
 
- nexus.pushtoNexus()
-                     // nexus.pushtoNexus(NEXUS_USERNAME,NEXUS_PASSWORD,NEXUS_URL,NEXUS_REPO_ID,PACKAGE_NAME,currentVersion)
+
+                     nexus.pushtoNexus(NEXUS_USERNAME,NEXUS_PASSWORD,NEXUS_URL,NEXUS_REPO_ID,PACKAGE_NAME,currentVersion)
                       //sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
                     
                     }

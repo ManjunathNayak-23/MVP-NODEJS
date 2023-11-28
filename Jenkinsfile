@@ -13,8 +13,7 @@ pipeline {
         stage('Download artifact from Nexus') {
             steps {
                 script {
-                    def extractedVersion = params.VERSION =~ /^(\d+\.\d+\.\d+)/
-                    def mainVersion = extractedVersion ? extractedVersion[0][0] : null
+                  def mainVersion = sh(script: "echo ${params.VERSION} | grep -oE '^\\d+\\.\\d+\\.\\d+'", returnStdout: true).trim()
 
                     withCredentials([
                         string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'),

@@ -9,6 +9,16 @@ pipeline {
     }
   
    stages {
+     stage("hello"){
+steps{
+script{
+sh "echo 'Hello'"
+}
+
+
+}
+
+     }
 //      stage('Download artifact from Nexus'){
 //             steps{
 //               cleanWs()

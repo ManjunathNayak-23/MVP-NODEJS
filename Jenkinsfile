@@ -84,7 +84,7 @@ pipeline {
                           // docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
                               
                           //     dockerImage.push()
-                          }
+                        //  }
                       }
                   }
               }

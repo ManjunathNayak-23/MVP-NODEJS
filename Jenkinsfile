@@ -12,8 +12,6 @@ pipeline {
     stages {
         stage('Download artifact from Nexus') {
             steps {
-                cleanWs()
-
                 script {
                     def extractedVersion = params.VERSION =~ /^(\d+\.\d+\.\d+)/
                     def mainVersion = extractedVersion ? extractedVersion[0][0] : null

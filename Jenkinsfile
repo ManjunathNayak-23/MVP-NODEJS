@@ -28,21 +28,21 @@ pipeline {
             }
         }
 
-    //   stage('SonarQube analysis') {
-    // environment {
-    //   SCANNER_HOME = tool 'Sonar-scanner'
-    // }
-    // steps {
-    //   script{
-    //         withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
-    //           sonarqube.sonarscan("Nodejs","nodejs")
-    //   }
-    //   }
+      stage('SonarQube analysis') {
+    environment {
+      SCANNER_HOME = tool 'Sonar-scanner'
+    }
+    steps {
+      script{
+            withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
+              sonarqube.sonarscan("Nodejs","nodejs")
+      }
+      }
 
 
-    //    }
-  //   }
-//}
+       }
+    }
+}
 
         stage('Archive Artifact') {
                     steps {
@@ -62,7 +62,6 @@ pipeline {
 
 
                      nexus.pushtoNexus(NEXUS_USERNAME,NEXUS_PASSWORD,NEXUS_URL,NEXUS_REPO_ID,PACKAGE_NAME)
-                     // sh "curl -v -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file dist.tar.gz ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${currentVersion}/${PACKAGE_NAME}-${currentVersion}.${env.BUILD_ID}.tar.gz"
                     
                     }
                     
@@ -74,21 +73,21 @@ pipeline {
 
       
 
-//         stage('Build and Push Docker Image') {
-//                   steps {
-//                       script {
+        stage('Build and Push Docker Image') {
+                  steps {
+                      script {
 
-                                         
-//                           dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
+                                         docker.buildAndPush(env.IMAGE_NAME,env.BUILD_ID,env.DOCKERFILE_PATH,env.DOCKER_HUB_CREDENTIALS)
+                          // dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
       
                   
-//                           docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
+                          // docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
                               
-//                               dockerImage.push()
-//                           }
-//                       }
-//                   }
-//               }
+                          //     dockerImage.push()
+                          }
+                      }
+                  }
+              }
 //         stage('OWASP Dependency-Check Vulnerabilities') {
 //               steps {
 //                 dependencyCheck additionalArguments: ''' 

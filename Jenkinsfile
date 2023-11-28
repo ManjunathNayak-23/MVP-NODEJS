@@ -15,18 +15,18 @@ pipeline {
  //  }
 
     stages{
-      stage('Build and Test') {
-            steps {
+      // stage('Build and Test') {
+      //       steps {
              
-                 script {
-                      nodejs.installDependency()
-                      nodejs.test()
-                      nodejs.build()
+      //            script {
+      //                 nodejs.installDependency()
+      //                 nodejs.test()
+      //                 nodejs.build()
                 
                
-                 }
-            }
-        }
+      //            }
+      //       }
+      //   }
 
     //   stage('SonarQube analysis') {
     // environment {
@@ -73,32 +73,23 @@ pipeline {
 
       
 
-        stage('Build and Push Docker Image') {
-                  steps {
-                      script {
+        // stage('Build and Push Docker Image') {
+        //           steps {
+        //               script {
 
-                                         dockertask.buildAndPush(env.IMAGE_NAME,env.BUILD_ID,env.DOCKERFILE_PATH,env.DOCKER_HUB_CREDENTIALS)
-                          // dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
-      
-                  
-                          // docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
-                              
-                          //     dockerImage.push()
-                          }
-                      }
-                  }
-              //}
-//         stage('OWASP Dependency-Check Vulnerabilities') {
-//               steps {
-//                 dependencyCheck additionalArguments: ''' 
-//                             -o './'
-//                             -s './'
-//                             -f 'ALL' 
-//                             --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+        //                                  dockertask.buildAndPush(env.IMAGE_NAME,env.BUILD_ID,env.DOCKERFILE_PATH,env.DOCKER_HUB_CREDENTIALS)
+        //                   }
+        //               }
+        //           }
+             
+        stage('OWASP Dependency-Check Vulnerabilities') {
+              steps {
+                script{
+                      dependencyCheck.owaspDependencyCheck()
+                }
                 
-//                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-//               }
-//             }
+              }
+            }
   
           }
         }

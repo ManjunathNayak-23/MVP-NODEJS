@@ -7,6 +7,7 @@ pipeline {
 
         string(name: 'VERSION', defaultValue: '1.0', description: 'Enter the version number')
     }
+  
    stages {
      stage('Download artifact from Nexus'){
             steps{

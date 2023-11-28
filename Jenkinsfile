@@ -77,7 +77,7 @@ pipeline {
                   steps {
                       script {
 
-                                         docker.buildAndPush(env.IMAGE_NAME,env.BUILD_ID,env.DOCKERFILE_PATH,env.DOCKER_HUB_CREDENTIALS)
+                                         dockertask.buildAndPush(env.IMAGE_NAME,env.BUILD_ID,env.DOCKERFILE_PATH,env.DOCKER_HUB_CREDENTIALS)
                           // dockerImage = docker.build("${env.IMAGE_NAME}:${env.BUILD_ID}", "-f ${env.DOCKERFILE_PATH} .")
       
                   

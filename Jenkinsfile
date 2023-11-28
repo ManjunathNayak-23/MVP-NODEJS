@@ -32,7 +32,7 @@ stage('SSH Example') {
                 }
             }
         }
-     }
+
 
        
      stage('Deploy to VM') {
@@ -47,5 +47,6 @@ stage('SSH Example') {
                    
             }
         }
+   }
    }
 }

@@ -85,7 +85,7 @@ pipeline {
         stage('OWASP Dependency-Check Vulnerabilities') {
               steps {
                 script{
-                      dependencyCheck.owaspDependencyCheck()
+                      dependencyCheckTask.owaspDependencyCheck()
                 }
                 
               }

@@ -35,11 +35,17 @@ stage('SSH Example') {
      }
 
        
-     // stage('Deploy to VM') {
-     //        steps {
-     //            // Use SSH or another method to copy and deploy the artifact to the VM
-     //            sh 'scp target/your-artifact.jar user@your-vm:/path/on/vm'
-     //        }
-     //    }
+     stage('Deploy to VM') {
+            steps {
+                // Use SSH or another method to copy and deploy the artifact to the VM
+               sshPublisher(publishers: [sshPublisherDesc(configName: 'dummy-server',
+                    transfers: [ sshTransfer(flatten: false,
+                                 remoteDirectory: './',
+                                 sourceFiles: 'mvp-nodejs-release-1.0.1.2.tar.gz'
+                    )])
+                  ])
+                   
+            }
+        }
    }
 }

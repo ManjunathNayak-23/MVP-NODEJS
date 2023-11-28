@@ -13,14 +13,7 @@ pipeline {
         stage('Download artifact from Nexus') {
             steps {
                 script {
-                    // Use regular expression to extract the desired version
-                    def extractedVersion = params.VERSION =~ /(\d+\.\d+\.\d+)/
-                    
-                    // Access the first group from the regular expression match
-                    def finalVersion = extractedVersion[0][1]
-                    
-                    // Print the extracted version
-                    echo "Extracted Version: ${finalVersion}"
+                
                     
                     withCredentials([
                         string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'),
@@ -28,8 +21,7 @@ pipeline {
                         string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'),
                         string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')
                     ]) {
-                        sh "curl -v -O -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/${finalVersion}/${PACKAGE_NAME}-${params.VERSION}.tar.gz"
-                    }
+                        sh "curl -v -O -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} ${NEXUS_URL}/repository/${NEXUS_REPO_ID}/${PACKAGE_NAME}/1.0.1/${PACKAGE_NAME}-${params.VERSION}.tar.gz"                    }
                 }
             }
         }

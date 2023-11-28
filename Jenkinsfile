@@ -30,26 +30,26 @@ pipeline {
             }
         }
 
-        stage('SSH Example') {
-            steps {
-                script {
-                    def remoteServer = '35.184.3.159'
-                    def remoteCredentials = 'sshtest'
+        // stage('SSH Example') {
+        //     steps {
+        //         script {
+        //             def remoteServer = '35.184.3.159'
+        //             def remoteCredentials = 'sshtest'
 
-                    sshCommand(remote: remoteServer, credentials: remoteCredentials, command: "echo 'Hello, remote world!'")
-                }
-            }
-        }
+        //             sshCommand(remote: remoteServer, credentials: remoteCredentials, command: "echo 'Hello, remote world!'")
+        //         }
+        //     }
+        // }
 
-        stage('Deploy to VM') {
-            steps {
-                script {
-                    // Use SSH or another method to copy and deploy the artifact to the VM
-                    sshPublisher(publishers: [sshPublisherDesc(configName: 'dummy-server',
-                        transfers: [sshTransfer(flatten: false, remoteDirectory: './', sourceFiles: "mvp-nodejs-release-${params.VERSION}.tar.gz")])
-                    ])
-                }
-            }
-        }
+        // stage('Deploy to VM') {
+        //     steps {
+        //         script {
+        //             // Use SSH or another method to copy and deploy the artifact to the VM
+        //             sshPublisher(publishers: [sshPublisherDesc(configName: 'dummy-server',
+        //                 transfers: [sshTransfer(flatten: false, remoteDirectory: './', sourceFiles: "mvp-nodejs-release-${params.VERSION}.tar.gz")])
+        //             ])
+        //         }
+        //     }
+        // }
     }
 }

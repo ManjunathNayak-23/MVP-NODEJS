@@ -39,15 +39,15 @@ pipeline {
         //     }
         // }
 
-        // stage('Deploy to VM') {
-        //     steps {
-        //         script {
-        //             // Use SSH or another method to copy and deploy the artifact to the VM
-        //             sshPublisher(publishers: [sshPublisherDesc(configName: 'dummy-server',
-        //                 transfers: [sshTransfer(flatten: false, remoteDirectory: './', sourceFiles: "mvp-nodejs-release-${params.VERSION}.tar.gz")])
-        //             ])
-        //         }
-        //     }
-        // }
+        stage('Deploy to VM') {
+            steps {
+                script {
+                    // Use SSH or another method to copy and deploy the artifact to the VM
+                    sshPublisher(publishers: [sshPublisherDesc(configName: 'dummy-server',
+                        transfers: [sshTransfer(flatten: false, remoteDirectory: './', sourceFiles: "mvp-nodejs-release-${params.VERSION}.tar.gz")])
+                    ])
+                }
+            }
+        }
     }
 }

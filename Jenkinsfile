@@ -28,48 +28,48 @@ pipeline {
             }
         }
 
-      stage('SonarQube analysis') {
-    environment {
-      SCANNER_HOME = tool 'Sonar-scanner'
-    }
-    steps {
-      script{
-            withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
-              sonarqube.sonarscan("Nodejs","nodejs")
-      }
-      }
+    //   stage('SonarQube analysis') {
+    // environment {
+    //   SCANNER_HOME = tool 'Sonar-scanner'
+    // }
+    // steps {
+    //   script{
+    //         withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
+    //           sonarqube.sonarscan("Nodejs","nodejs")
+    //   }
+    //   }
 
 
-       }
-    }
-}
+    //    }
+    // }
 
-        stage('Archive Artifact') {
-                    steps {
-                        script {
+
+        // stage('Archive Artifact') {
+        //             steps {
+        //                 script {
                            
-                         archive.archiveArtifact()
+        //                  archive.archiveArtifact()
               
-                        }
-                    }
-                }
+        //                 }
+        //             }
+        //         }
 
-      stage('Deploy to Nexus') {
-            steps {
-                script {
+      // stage('Deploy to Nexus') {
+      //       steps {
+      //           script {
                    
-                    withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
+      //               withCredentials([string(credentialsId: 'nexusurl', variable: 'NEXUS_URL'), string(credentialsId: 'nexusrepo', variable: 'NEXUS_REPO_ID'), string(credentialsId: 'nexuspassword', variable: 'NEXUS_PASSWORD'), string(credentialsId: 'nexususername', variable: 'NEXUS_USERNAME')]) {
 
 
-                     nexus.pushtoNexus(NEXUS_USERNAME,NEXUS_PASSWORD,NEXUS_URL,NEXUS_REPO_ID,PACKAGE_NAME)
+      //                nexus.pushtoNexus(NEXUS_USERNAME,NEXUS_PASSWORD,NEXUS_URL,NEXUS_REPO_ID,PACKAGE_NAME)
                     
-                    }
+      //               }
                     
                    
                   
-                }
-            }
-        }
+      //           }
+      //       }
+      //   }
 
       
 
@@ -84,10 +84,10 @@ pipeline {
                           // docker.withRegistry('https://registry.hub.docker.com', "${env.DOCKER_HUB_CREDENTIALS}") {
                               
                           //     dockerImage.push()
-                        //  }
+                          }
                       }
                   }
-              }
+              //}
 //         stage('OWASP Dependency-Check Vulnerabilities') {
 //               steps {
 //                 dependencyCheck additionalArguments: ''' 

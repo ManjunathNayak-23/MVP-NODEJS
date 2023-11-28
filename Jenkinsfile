@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     // Use regular expression to extract the desired version
-                    def extractedVersion = fullVersion =~ /(\d+\.\d+\.\d+)/
+                    def extractedVersion = params.VERSION =~ /(\d+\.\d+\.\d+)/
                     
                     // Access the first group from the regular expression match
                     def finalVersion = extractedVersion[0][1]
@@ -33,6 +33,8 @@ pipeline {
                 }
             }
         }
+
+        // Uncomment the following stages after confirming the first stage is working correctly
 
         // stage('SSH Example') {
         //     steps {

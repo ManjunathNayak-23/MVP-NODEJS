@@ -44,7 +44,7 @@ pipeline {
                 script {
                     // Use SSH or another method to copy and deploy the artifact to the VM
                     sshPublisher(publishers: [sshPublisherDesc(configName: 'sshtest',
-                        transfers: [sshTransfer(flatten: false, remoteDirectory: './', sourceFiles: "mvp-nodejs-release-${params.VERSION}.tar.gz")])
+                        transfers: [sshTransfer(flatten: false, remoteDirectory: '/home/ubuntu', sourceFiles: "mvp-nodejs-release-${params.VERSION}.tar.gz")])
                     ])
                 }
             }

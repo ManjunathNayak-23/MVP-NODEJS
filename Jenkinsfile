@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     // Use the configured SSH server connection
-                    sshCommand remote: 'sshtest', command: 'sudo systemctl stop nginx && sudo rm -rf /var/www/html/*'
+                        sshCommand remote: [name: 'sshtest'], command: 'sudo systemctl stop nginx && sudo rm -rf /var/www/html/*'
                 }
             }
         }

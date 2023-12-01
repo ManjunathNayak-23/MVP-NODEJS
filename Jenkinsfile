@@ -60,7 +60,7 @@ pipeline {
                 script {
                     // Use SSH or another method to copy and deploy the artifact to the VM
                     sshPublisher(publishers: [sshPublisherDesc(configName: 'sshtest',
-                        transfers: [sshTransfer(flatten: false, remoteDirectory: '/var/www/html/', sourceFiles: "dist/*")])
+                        transfers: [sshTransfer(flatten: false,execCommand: 'sudo scp', remoteDirectory: '/var/www/html/', sourceFiles: "dist/*")])
                     ])
                 }
             }

@@ -36,15 +36,23 @@ pipeline {
                 }
             }
         }
-   stage('Stop Nginx') {
+
+         stage('SSH to Remote Server') {
             steps {
                 script {
-                    // Use the configured SSH server connection
-                        sshCommand remote: [name: 'sshtest'], command: 'sudo systemctl stop nginx && sudo rm -rf /var/www/html/*'
+                     sshPublisher(publishers: [sshPublisherDesc(configName: 'sshtest', transfers: [
+                                    sshTransfer(
+                                        execCommand: "sudo systemctl stop nginx && sudo rm -rf /var/www/html/*",
+                                        execTimeout: 120000
+                                    )
+                                ])
+                    ])
                 }
+               
+                
             }
         }
-            
+
 
 
         stage('Deploy to VM') {

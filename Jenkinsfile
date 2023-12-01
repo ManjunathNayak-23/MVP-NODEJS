@@ -65,5 +65,21 @@ pipeline {
                 }
             }
         }
+
+         stage('start nginx') {
+            steps {
+                script {
+                     sshPublisher(publishers: [sshPublisherDesc(configName: 'sshtest', transfers: [
+                                    sshTransfer(
+                                        execCommand: "sudo cp -rf /home/ubuntu/dist/* /var/www/html/ && rm -rf /home/ubuntu/dist && sudo systemctl start nginx",
+                                        execTimeout: 120000
+                                    )
+                                ])
+                    ])
+                }
+               
+                
+            }
+        }
     }
 }

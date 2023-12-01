@@ -68,7 +68,7 @@ pipeline {
          stage('start nginx') {
             steps {
                 script {
-                     startNginx.start(SSHCONFIGNAME)
+                     startNginx.startService(SSHCONFIGNAME)
                 }
                
                 

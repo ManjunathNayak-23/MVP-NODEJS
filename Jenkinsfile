@@ -26,28 +26,36 @@ pipeline {
             }
         }
 
-        // stage("unzip artifact"){
-        //     steps{
-        //         script{
-        //             sh "tar -xvf "
+        stage("unzip artifact"){
+            steps{
+                script{
+                    sh "tar -xvf dist.tar.gz"
 
 
 
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
+   stage('Stop Nginx') {
+            steps {
+                script {
+                    // Use the configured SSH server connection
+                    sshCommand remote: 'sshtest', command: 'sudo systemctl stop nginx && sudo rm -rf /var/www/html/*'
+                }
+            }
+        }
             
 
 
-        // stage('Deploy to VM') {
-        //     steps {
-        //         script {
-        //             // Use SSH or another method to copy and deploy the artifact to the VM
-        //             sshPublisher(publishers: [sshPublisherDesc(configName: 'sshtest',
-        //                 transfers: [sshTransfer(flatten: false, remoteDirectory: '/home/ubuntu', sourceFiles: "mvp-nodejs-release-${params.VERSION}.tar.gz")])
-        //             ])
-        //         }
-        //     }
-        // }
+        stage('Deploy to VM') {
+            steps {
+                script {
+                    // Use SSH or another method to copy and deploy the artifact to the VM
+                    sshPublisher(publishers: [sshPublisherDesc(configName: 'sshtest',
+                        transfers: [sshTransfer(flatten: false, remoteDirectory: '/var/www/html/', sourceFiles: "dist/**")])
+                    ])
+                }
+            }
+        }
     }
 }

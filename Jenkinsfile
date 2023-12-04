@@ -8,9 +8,7 @@ pipeline {
     PACKAGE_NAME = 'mvp-nodejs-release'
     VERSION_FILE = 'package.json'
   }
-  // triggers {
-  //    pollSCM('* * * * *') // Enabling being build on Push
-  //  }
+
 
   stages {
     stage('Build and Test') {

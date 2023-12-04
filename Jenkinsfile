@@ -9,6 +9,7 @@ pipeline {
     PACKAGE_NAME = 'mvp-nodejs-release'
     VERSION_FILE = 'package.json'
   }
+  
  triggers {
         pollSCM('* * * * *') // Poll SCM every 5 minutes
     }

@@ -9,6 +9,7 @@ pipeline {
     PACKAGE_NAME = 'mvp-nodejs-release'
     VERSION_FILE = 'package.json'
   }
+
   
   stages {
     stage('Build and Test') {

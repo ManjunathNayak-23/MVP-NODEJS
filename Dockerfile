@@ -4,6 +4,7 @@ FROM nginx:latest
 WORKDIR /usr/share/nginx/html
 
 # Copy the contents of the local 'dist' folder to the container's working directory
+
 COPY dist/ .
 
 EXPOSE 80

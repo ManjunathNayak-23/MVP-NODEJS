@@ -1,10 +1,7 @@
 @Library('sharedLibrary') _
 pipeline {
   agent any
-   triggers {
-        
-        branches('release-*')
-    }
+
   environment {
     DOCKER_HUB_CREDENTIALS = 'dockercred' // Replace with your Docker Hub credentials ID
     IMAGE_NAME = 'chandu2311/mvpnode-release'

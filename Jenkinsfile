@@ -13,7 +13,6 @@ pipeline {
   stages {
     stage('Build and Test') {
       steps {
-
         script {
           nodejs.installDependency()
           nodejs.test()

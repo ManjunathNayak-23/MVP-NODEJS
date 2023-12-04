@@ -10,6 +10,7 @@ pipeline {
     VERSION_FILE = 'package.json'
   }
 
+  
   stages {
     stage('Build and Test') {
       steps {

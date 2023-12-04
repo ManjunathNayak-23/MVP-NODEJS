@@ -13,7 +13,6 @@ pipeline {
  triggers {
         pollSCM('* * * * *') // Poll SCM every 5 minutes
     }
-
   
   stages {
     stage('Build and Test') {

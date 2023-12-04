@@ -9,7 +9,17 @@ pipeline {
     PACKAGE_NAME = 'mvp-nodejs-release'
     VERSION_FILE = 'package.json'
   }
+ triggers {
+        pollSCM('* * * * *') // Poll SCM every 5 minutes
+    }
 
+    // Define conditions for pipeline execution based on branch name
+    when {
+        expression { 
+            // Only run the pipeline if the branch name matches the pattern
+            return env.BRANCH_NAME =~ /^release-.*$/
+        }
+    }
   
   stages {
     stage('Build and Test') {

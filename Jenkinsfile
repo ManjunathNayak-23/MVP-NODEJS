@@ -13,12 +13,6 @@ pipeline {
         pollSCM('* * * * *') // Poll SCM every 5 minutes
     }
 
-    when {
-        expression { 
-            // Only run the pipeline if the branch name matches the pattern
-            return env.BRANCH_NAME =~ /^release-.*$/
-        }
-    }
   
   stages {
     stage('Build and Test') {

@@ -13,7 +13,6 @@ pipeline {
         pollSCM('* * * * *') // Poll SCM every 5 minutes
     }
 
-    // Define conditions for pipeline execution based on branch name
     when {
         expression { 
             // Only run the pipeline if the branch name matches the pattern

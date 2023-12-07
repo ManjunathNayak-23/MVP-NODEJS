@@ -15,8 +15,8 @@ pipeline {
 
         script {
           nodejs.installDependency()
-          nodejs.test()
           nodejs.build()
+          nodejs.test()
         }
       }
     }
@@ -31,6 +31,13 @@ pipeline {
             sonarqube.sonarscan("Nodejs",
               "nodejs")
           }
+        }
+      }
+    }
+        stage('OWASP Dependency-Check Vulnerabilities') {
+      steps {
+        script {
+          dependencyCheckTask.owaspDependencyCheck()
         }
       }
     }
@@ -65,12 +72,6 @@ pipeline {
       }
     }
 
-    stage('OWASP Dependency-Check Vulnerabilities') {
-      steps {
-        script {
-          dependencyCheckTask.owaspDependencyCheck()
-        }
-      }
-    }
+
   }
 }

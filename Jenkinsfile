@@ -71,6 +71,18 @@ pipeline {
         }
       }
     }
+     stage('Trigger Downstream Pipeline') {
+            steps {
+                script {
+                    // Trigger the downstream pipeline (Pipeline B) only if the build is stable or successful
+                    if (currentBuild.resultIsBetterOrEqualTo('SUCCESS')) {
+                        build job: 'AutoDeployToDev'
+                    } else {
+                        echo 'Skipping downstream pipeline due to unsuccessful upstream build.'
+                    }
+                }
+            }
+        }
 
 
   }

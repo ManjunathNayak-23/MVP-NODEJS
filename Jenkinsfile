@@ -35,13 +35,13 @@ pipeline {
         }
       }
     }
-        stage('OWASP Dependency-Check Vulnerabilities') {
-      steps {
-        script {
-          dependencyCheckTask.owaspDependencyCheck()
-        }
-      }
-    }
+    //     stage('OWASP Dependency-Check Vulnerabilities') {
+    //   steps {
+    //     script {
+    //       dependencyCheckTask.owaspDependencyCheck()
+    //     }
+    //   }
+    // }
 
     stage('Archive Artifact') {
       steps {

@@ -5,7 +5,7 @@ pipeline {
     DOCKER_HUB_CREDENTIALS = 'dockercred' // Replace with your Docker Hub credentials ID
     IMAGE_NAME = 'chandu2311/mvpnode'
     DOCKERFILE_PATH = 'Dockerfile'
-    PACKAGE_NAME = 'mvp-nodejs'
+    PACKAGE_NAME = 'mvp-nodejs-develop'
     VERSION_FILE = 'package.json'
     ARTIFACT_VERSION=''
   }

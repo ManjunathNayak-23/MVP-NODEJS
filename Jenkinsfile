@@ -26,19 +26,19 @@ pipeline {
     }
 
 
-    // stage('SonarQube analysis') {
-    //   environment {
-    //     SCANNER_HOME = tool 'Sonar-scanner'
-    //   }
-    //   steps {
-    //     script {
-    //       withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
-    //         sonarqube.sonarscan("Nodejs-release",
-    //           "nodejs-release")
-    //       }
-    //     }
-    //   }
-    // }
+    stage('SonarQube analysis') {
+      environment {
+        SCANNER_HOME = tool 'Sonar-scanner'
+      }
+      steps {
+        script {
+          withSonarQubeEnv(credentialsId: 'sonartoken', installationName: 'Sonar') {
+            sonarqube.sonarscan("Nodejs-release",
+              "nodejs-release")
+          }
+        }
+      }
+    }
 
     stage('Archive Artifact') {
       steps {
@@ -70,12 +70,12 @@ pipeline {
       }
     }
 
-    // stage('OWASP Dependency-Check Vulnerabilities') {
-    //   steps {
-    //     script {
-    //       dependencyCheckTask.owaspDependencyCheck()
-    //     }
-    //   }
-    // }
+    stage('OWASP Dependency-Check Vulnerabilities') {
+      steps {
+        script {
+          dependencyCheckTask.owaspDependencyCheck()
+        }
+      }
+    }
   }
 }
